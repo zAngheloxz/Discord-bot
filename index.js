@@ -1,3 +1,13 @@
+
+import { Client, GatewayIntentBits } from 'discord.js';
+import { GoogleGenAI } from '@google/genai';
+import express from 'express';
+import 'dotenv/config';
+
+// ... (el resto del código que te pasé antes)
+
+
+
 import { Client, GatewayIntentBits } from 'discord.js';
 import { GoogleGenAI } from '@google/genai';
 import express from 'express';
