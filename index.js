@@ -12,7 +12,7 @@ const client = new Client({
     ]
 });
 
-// Configurar la IA de Google Gemini
+// Inicializar la IA de Google Gemini de forma segura
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 
 client.once('ready', () => {
@@ -22,7 +22,7 @@ client.once('ready', () => {
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
 
-    // Responde solo si lo mencionas (ej: @MiBot hola)
+    // Responde si mencionas al bot
     if (message.mentions.has(client.user)) {
         const pregunta = message.content.replace(`<@${client.user.id}>`, '').trim();
         
@@ -33,15 +33,22 @@ client.on('messageCreate', async (message) => {
         await message.channel.sendTyping();
 
         try {
+            // Estructura de llamada directa y limpia para Gemini 2.5
             const response = await ai.models.generateContent({
                 model: 'gemini-2.5-flash',
-                contents: pregunta,
+                contents: [{ role: 'user', parts: [{ text: pregunta }] }]
             });
 
-            return message.reply(response.text);
+            if (response && response.text) {
+                return message.reply(response.text);
+            } else {
+                return message.reply('La IA no devolvió texto. Revisa la consola.');
+            }
+
         } catch (error) {
             console.error('Error con la IA de Gemini:', error);
-            return message.reply('Lo siento, bro. Tuve un pequeño cortocircuito en mi cerebro de IA. Inténtalo de nuevo.');
+            // Esto te dirá en Discord exactamente qué está fallando (ej: API key inválida)
+            return message.reply(`❌ Error técnico de IA: \`${error.message}\``);
         }
     }
 });
@@ -56,3 +63,4 @@ server.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
     client.login(process.env.DISCORD_TOKEN);
 });
+
