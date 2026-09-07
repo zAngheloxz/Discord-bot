@@ -1,9 +1,25 @@
+import { Client, GatewayIntentBits } from 'discord.js';
+import { GoogleGenAI } from '@google/genai';
+import express from 'express';
+import 'dotenv/config';
 
-const { Client, GatewayIntentBits } = require('discord.js');
-const { GoogleGenAI } = require('@google/genai');
-require('dotenv').config();
-const http = require('http');
+// 1. Configuración del Servidor Web para Render (Evita el crash por timeout)
+const app = express();
+const PORT = process.env.PORT || 3000;
 
+app.get('/', (req, res) => {
+    res.send('¡El bot de Discord está vivo y funcionando!');
+});
+
+app.listen(PORT, () => {
+    console.log(`Servidor web escuchando en el puerto ${PORT}`);
+});
+
+// 2. Inicialización de la Inteligencia Artificial (Gemini)
+// Nota: La nueva SDK oficial de Google utiliza 'GoogleGenAI'
+const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+// 3. Inicialización del cliente de Discord
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -12,55 +28,45 @@ const client = new Client({
     ]
 });
 
-// Inicializar la IA de Google Gemini de forma segura
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
 client.once('ready', () => {
-    console.log(`¡Bot con IA encendido como ${client.user.tag}!`);
+    console.log(`¡Conectado exitosamente como ${client.user.tag}!`);
 });
 
+// 4. Lógica para procesar los mensajes y responder con IA
 client.on('messageCreate', async (message) => {
+    // Ignorar mensajes que vengan de otros bots o del propio bot
     if (message.author.bot) return;
 
-    // Responde si mencionas al bot
+    // El bot responderá solo si lo mencionan directamete (@Bot)
     if (message.mentions.has(client.user)) {
-        const pregunta = message.content.replace(`<@${client.user.id}>`, '').trim();
-        
-        if (!pregunta) {
-            return message.reply('¡Hola! ¿En qué te puedo ayudar hoy? Pregúntame lo que quieras.');
-        }
-
-        await message.channel.sendTyping();
-
         try {
-            // Estructura de llamada directa y limpia para Gemini 2.5
-            const response = await ai.models.generateContent({
-                model: 'gemini-2.5-flash',
-                contents: [{ role: 'user', parts: [{ text: pregunta }] }]
-            });
+            // Mostrar estado "escribiendo..." en el canal de Discord
+            await message.channel.sendTyping();
 
-            if (response && response.text) {
-                return message.reply(response.text);
-            } else {
-                return message.reply('La IA no devolvió texto. Revisa la consola.');
+            // Limpiar la mención del texto para enviar solo la pregunta limpia a la IA
+            const prompt = message.content.replace(`<@${client.user.id}>`, '').trim();
+
+            if (!prompt) {
+                return message.reply("¡Hola! ¿En qué te puedo ayudar hoy?");
             }
 
+            // Llamada a la API de Google con el modelo corregido
+            const response = await ai.models.generateContent({
+                model: 'gemini-3.6-flash',
+                contents: prompt,
+            });
+
+            // Enviar la respuesta generada de vuelta a Discord
+            await message.reply(response.text);
+
         } catch (error) {
-            console.error('Error con la IA de Gemini:', error);
-            // Esto te dirá en Discord exactamente qué está fallando (ej: API key inválida)
-            return message.reply(`❌ Error técnico de IA: \`${error.message}\``);
+            console.error("Error al procesar la IA:", error);
+            await message.reply("❌ Lo siento, tuve un problema interno al procesar tu solicitud.");
         }
     }
 });
 
-const server = http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('Bot con IA activo\n');
-});
+// 5. Autenticación del bot con el token de Discord
+client.login(process.env.DISCORD_TOKEN);
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-    console.log(`Servidor escuchando en el puerto ${PORT}`);
-    client.login(process.env.DISCORD_TOKEN);
-});
 
