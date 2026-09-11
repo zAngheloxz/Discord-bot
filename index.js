@@ -14,15 +14,15 @@ const {
 } = require("discord.js");
 
 // ================= CONFIG =================
-const TOKEN = "PON_AQUI_EL_TOKEN";
-const GUILD_ID = "PON_AQUI_EL_ID_DEL_SERVIDOR";
+const TOKEN = "MTU0Mjk4NDAwMzUxNzE1MzM1MA.G2cp1f.sBvOR-SLi1V316sbxyO3piuMs3QU_F2x0IS_VA";
+const GUILD_ID = "1546409430503915572";
 
 // Opcionales:
-const TICKET_CATEGORY_ID = "";
-const STAFF_ROLE_ID = "";
+const TICKET_CATEGORY_ID = "1547879527785566248";
+const STAFF_ROLE_ID = "1546413722023493633";
 
 // Cambia/añade las palabras que quieras bloquear.
-const BAD_WORDS = ["palabra1", "palabra2", "palabra3"];
+const BAD_WORDS = ["puta", "manco", "subnormal"];
 
 const LINK_REGEX =
   /(https?:\/\/|www\.|discord\.gg\/|discord\.com\/invite\/)[^\s]+/i;
@@ -403,12 +403,12 @@ client.on("interactionCreate", async interaction => {
 });
 
 // ================= LOGIN =================
-if (TOKEN === "PON_AQUI_EL_TOKEN") {
+if (TOKEN === "MTU0Mjk4NDAwMzUxNzE1MzM1MA.G2cp1f.sBvOR-SLi1V316sbxyO3piuMs3QU_F2x0IS_VA") {
   console.error("❌ Pon el token del bot en index.js.");
   process.exit(1);
 }
 
-if (GUILD_ID === "PON_AQUI_EL_ID_DEL_SERVIDOR") {
+if (GUILD_ID === "1546409430503915572") {
   console.error("❌ Pon el ID del servidor en index.js.");
   process.exit(1);
 }
