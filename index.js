@@ -18,7 +18,7 @@ const TOKEN = process.env.DISCORD_TOKEN;
 const GUILD_ID = "1546409430503915572";
 
 // Opcionales:
-const TICKET_CATEGORY_ID = "1547879527785566248";
+const TICKET_CATEGORY_ID = "1547885411882508349";
 const STAFF_ROLE_ID = "1546413722023493633";
 
 // Cambia/añade las palabras que quieras bloquear.
