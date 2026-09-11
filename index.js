@@ -14,7 +14,7 @@ const {
 } = require("discord.js");
 
 // ================= CONFIG =================
-const TOKEN = "MTU0Mjk4NDAwMzUxNzE1MzM1MA.G2cp1f.sBvOR-SLi1V316sbxyO3piuMs3QU_F2x0IS_VA";
+const TOKEN = process.env.DISCORD_TOKEN;
 const GUILD_ID = "1546409430503915572";
 
 // Opcionales:
