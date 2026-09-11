@@ -1,15 +1,14 @@
+
 {
-  "name": "discord-gemini-bot",
+  "name": "catby17",
   "version": "1.0.0",
-  "type": "module",
+  "description": "Bot de Discord Catby17",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
   },
   "dependencies": {
-    "@google/genai": "^2.21.0",
-    "discord.js": "^14.14.1",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "discord.js": "^14.22.1"
   }
 }
+```
