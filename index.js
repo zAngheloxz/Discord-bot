@@ -403,12 +403,12 @@ client.on("interactionCreate", async interaction => {
 });
 
 // ================= LOGIN =================
-if (TOKEN === "MTU0Mjk4NDAwMzUxNzE1MzM1MA.G2cp1f.sBvOR-SLi1V316sbxyO3piuMs3QU_F2x0IS_VA") {
+if (TOKEN === "PON_AQUI_EL_TOKEN") {
   console.error("❌ Pon el token del bot en index.js.");
   process.exit(1);
 }
 
-if (GUILD_ID === "1546409430503915572") {
+if (GUILD_ID === "PON_AQUI_EL_ID_DEL_SERVIDOR") {
   console.error("❌ Pon el ID del servidor en index.js.");
   process.exit(1);
 }
