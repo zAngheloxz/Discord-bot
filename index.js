@@ -19,7 +19,7 @@ const GUILD_ID = "1546409430503915572";
 
 // Opcionales:
 const TICKET_CATEGORY_ID = "1547879527785566248";
-const STAFF_ROLE_ID = "1546409430503915572";
+const STAFF_ROLE_ID = "1546413722023493633";
 
 // Cambia/añade las palabras que quieras bloquear.
 const BAD_WORDS = ["puta", "manco", "subnormal"];
